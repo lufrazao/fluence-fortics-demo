@@ -10,9 +10,11 @@ export default function SectionNav() {
   return (
     <nav className="flex items-center justify-between px-4 py-2 border-b border-white/10 bg-gray-950 flex-shrink-0 z-50">
       <div className="flex items-center gap-2">
-        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-fluence-400 to-fluence-600 flex items-center justify-center text-xs font-bold text-white shadow-lg shadow-fluence-500/30">
-          F
-        </div>
+        <img
+          src={`${import.meta.env.BASE_URL}logo.png`}
+          alt="Fluence"
+          className="w-7 h-7 rounded-lg shadow-lg shadow-fluence-500/30"
+        />
         <span className="text-sm font-bold tracking-tight text-fluence-400">Fluence</span>
         <span className="text-xs mx-1 text-gray-600">×</span>
         <span className="text-sm font-bold tracking-tight text-white">Fortics</span>

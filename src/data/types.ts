@@ -73,6 +73,8 @@ export interface PersonaConfig {
   subtitle: string
   avatar: string
   profile: CustomerProfile
+  recommendedApproach?: string
+  channelAdaptation?: string
   conversations: {
     id: string
     label: string

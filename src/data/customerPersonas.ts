@@ -1,6 +1,6 @@
 import type { PersonaConfig } from './types'
 import {
-  joaoConv1Generic, joaoConv2Generic, joaoConv3Fluence, joaoConv3Generic,
+  joaoConv1Generic, joaoConv1Fluence, joaoConv2Generic, joaoConv3Fluence, joaoConv3Generic,
   mariaGeneric, mariaFluence,
   anaGeneric, anaFluence,
 } from './conversationScripts'
@@ -11,6 +11,8 @@ export const PERSONAS: PersonaConfig[] = [
     name: 'João Silva',
     subtitle: 'The Impatient Repeat Caller',
     avatar: '👨‍💼',
+    recommendedApproach: 'Be direct. Lead with solution. Skip pleasantries. No filler — get to the fix immediately.',
+    channelAdaptation: 'WhatsApp — short, action-oriented messages',
     profile: {
       communicationStyle: 'DIRECT',
       patienceThreshold: 0.2,
@@ -117,6 +119,8 @@ export const PERSONAS: PersonaConfig[] = [
     name: 'Maria Oliveira',
     subtitle: 'The Detailed Explainer',
     avatar: '👩‍💻',
+    recommendedApproach: 'Provide detailed data and comparisons. Anticipate follow-up questions. Match her thoroughness.',
+    channelAdaptation: 'Webchat — structured responses with data tables and bullet points',
     profile: {
       communicationStyle: 'DETAILED',
       patienceThreshold: 0.8,
@@ -198,6 +202,8 @@ export const PERSONAS: PersonaConfig[] = [
     name: 'Ana Costa',
     subtitle: 'The Voice Message Sender',
     avatar: '🎧',
+    recommendedApproach: 'Use voice messages. Keep tone warm and conversational. Never force text-only interaction.',
+    channelAdaptation: 'WhatsApp — voice messages matching customer modality',
     profile: {
       communicationStyle: 'AUDIO',
       patienceThreshold: 0.5,

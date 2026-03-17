@@ -1,5 +1,23 @@
 import type { ProfileSnapshot } from './types'
 
+// Conv 3 WITHOUT Fluence — for toggle OFF in MultiConversation
+export const JOAO_CONV3_NO_FLUENCE: ProfileSnapshot = {
+  label: 'Conversation 3',
+  day: 'Day 7',
+  profile: {
+    communicationStyle: 'DIRECT',
+    patienceThreshold: 0.05,
+    automationTolerance: 0.05,
+    frustrationVelocity: 'FLASH',
+    churnRisk: 'critical',
+  },
+  csat: 1,
+  hasFluence: false,
+  botBehavior: 'Generic template (3rd time)',
+  agentBehavior: 'Cold start — no history',
+  result: 'Customer churned — switched to competitor',
+}
+
 export const JOAO_EVOLUTION: ProfileSnapshot[] = [
   {
     label: 'Conversation 1',

@@ -90,26 +90,28 @@ export default function SimulationControls({
         </select>
       </div>
 
-      {/* Conversation selector */}
-      <div className="flex items-center gap-2">
-        <span className="text-xs text-gray-500">Conv:</span>
-        <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
-          {Array.from({ length: conversationCount }, (_, i) => (
-            <button
-              key={i}
-              onClick={() => onConversationChange(i)}
-              className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
-                selectedConversation === i
-                  ? 'bg-white/15 text-white'
-                  : 'text-gray-400 hover:text-gray-200'
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
+      {/* Conversation selector (hidden when only 1 conversation) */}
+      {conversationCount > 1 && (
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-500">Conv:</span>
+          <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1">
+            {Array.from({ length: conversationCount }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => onConversationChange(i)}
+                className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
+                  selectedConversation === i
+                    ? 'bg-white/15 text-white'
+                    : 'text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+          <span className="text-xs text-gray-600">of {conversationCount}</span>
         </div>
-        <span className="text-xs text-gray-600">of {conversationCount}</span>
-      </div>
+      )}
 
       {/* State indicator */}
       <div className="flex items-center gap-1.5">

@@ -15,6 +15,17 @@ export const joaoConv1Generic: ConversationMessage[] = [
   { from: 'system', text: 'Conversation closed. CSAT: ⭐⭐⭐☆☆ (3/5)', delay: 2000 },
 ]
 
+// ─── JOÃO — Conversation 1 (WITH Fluence) ────────────────────────────────
+export const joaoConv1Fluence: ConversationMessage[] = [
+  { from: 'customer', text: 'Minha fatura veio errada', delay: 0 },
+  { from: 'system', text: '🧠 Fluence: Communication style: DIRECT. Adapting response — solution-first, no filler.', delay: 500 },
+  { from: 'bot_fluence', text: 'João, identifiquei uma cobrança duplicada de R$89,90 na sua fatura deste mês. Já estou gerando o estorno. Quer que eu aplique como crédito na próxima fatura ou reembolso direto via Pix?', delay: 2500 },
+  { from: 'customer', text: 'Pix', delay: 1000 },
+  { from: 'bot_fluence', text: 'Pronto. Reembolso de R$89,90 via Pix será processado em até 2h. Você receberá confirmação aqui no WhatsApp. Também abri uma verificação automática para garantir que não aconteça no próximo ciclo.', delay: 2500 },
+  { from: 'customer', text: 'Ótimo, obrigado', delay: 1500 },
+  { from: 'system', text: 'Resolved by bot — no escalation needed. CSAT: ⭐⭐⭐⭐⭐ (5/5)', delay: 2000 },
+]
+
 // ─── JOÃO — Conversation 2 (WITHOUT Fluence, repeat) ─────────────────────
 export const joaoConv2Generic: ConversationMessage[] = [
   { from: 'customer', text: 'Fatura errada DE NOVO', delay: 0 },

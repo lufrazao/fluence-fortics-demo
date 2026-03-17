@@ -1,7 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { JOAO_EVOLUTION } from '@/data/profileEvolution'
+import { JOAO_EVOLUTION, JOAO_CONV3_NO_FLUENCE } from '@/data/profileEvolution'
 import { PERSONAS } from '@/data/customerPersonas'
+import { joaoConv3Generic } from '@/data/conversationScripts'
 import { ConversationEngine } from '@/simulation/ConversationEngine'
 import type { EngineState, EngineCallbacks } from '@/simulation/ConversationEngine'
 import type { ConversationMessage, SimulationEvent } from '@/data/types'
@@ -10,9 +11,11 @@ import PhoneMockup from '../components/PhoneMockup'
 import WhatsAppMockup from '../components/WhatsAppMockup'
 import EventStream from '../components/EventStream'
 import AgentBriefingCard from '@/components/intelligence/AgentBriefingCard'
+import { useFluence } from '../IntelligenceApp'
 import { Play, Pause, RotateCcw } from 'lucide-react'
 
 export default function MultiConversation() {
+  const fluenceEnabled = useFluence()
   const [activeIndex, setActiveIndex] = useState(0)
   const [messages, setMessages] = useState<ConversationMessage[]>([])
   const [events, setEvents] = useState<SimulationEvent[]>([])
@@ -22,7 +25,23 @@ export default function MultiConversation() {
   const [speed, setSpeed] = useState(2)
 
   const joao = PERSONAS[0]
+
+  // Build evolution snapshots based on toggle
+  const evolution = fluenceEnabled
+    ? JOAO_EVOLUTION
+    : [...JOAO_EVOLUTION.slice(0, 2), JOAO_CONV3_NO_FLUENCE]
+
+  // For conv 3, use appropriate messages based on toggle
+  const getConvMessages = (index: number) => {
+    if (index === 2 && !fluenceEnabled) {
+      return joaoConv3Generic
+    }
+    return joao.conversations[index].messages
+  }
+
   const conv = joao.conversations[activeIndex]
+  const currentMessages = getConvMessages(activeIndex)
+  const isConv3Fluence = activeIndex === 2 && fluenceEnabled
   const engineRef = useRef<ConversationEngine | null>(null)
 
   const initEngine = useCallback(() => {
@@ -35,10 +54,10 @@ export default function MultiConversation() {
       onTypingStart: (s) => { setIsTyping(true); setTypingSender(s) },
       onTypingEnd: () => setIsTyping(false),
     }
-    const engine = new ConversationEngine(conv.messages, callbacks)
+    const engine = new ConversationEngine(currentMessages, callbacks)
     engine.setSpeed(speed)
     engineRef.current = engine
-  }, [conv.messages, speed])
+  }, [currentMessages, speed])
 
   useEffect(() => {
     setMessages([])
@@ -47,7 +66,12 @@ export default function MultiConversation() {
     setEngineState('idle')
     initEngine()
     return () => engineRef.current?.destroy()
-  }, [activeIndex, initEngine])
+  }, [activeIndex, fluenceEnabled, initEngine])
+
+  // Reset to conv 1 when toggle changes
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [fluenceEnabled])
 
   const play = () => engineRef.current?.play()
   const pause = () => engineRef.current?.pause()
@@ -59,17 +83,21 @@ export default function MultiConversation() {
     initEngine()
   }
 
+  const showFinalOutcome = activeIndex === 2 && engineState === 'complete'
+
   return (
     <div className="flex-1 overflow-y-auto p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-bold mb-2">Profile Evolution — João across 3 conversations</h1>
         <p className="text-sm text-gray-400 mb-6">
-          The same customer. Three conversations. By the third, Fluence knows João better than any human agent could.
+          {fluenceEnabled
+            ? 'The same customer. Three conversations. By the third, Fluence knows João better than any human agent could.'
+            : 'Without Fluence: three conversations, same cold start every time. Watch the customer churn.'}
         </p>
 
         {/* Timeline */}
         <ConversationTimeline
-          snapshots={JOAO_EVOLUTION}
+          snapshots={evolution}
           activeIndex={activeIndex}
           onSelect={(i) => setActiveIndex(i)}
         />
@@ -82,6 +110,7 @@ export default function MultiConversation() {
               <span className={`w-2 h-2 rounded-full ${engineState === 'playing' ? 'bg-green-400 animate-pulse' : 'bg-gray-600'}`} />
               <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
                 {conv.label} — {conv.day}
+                {isConv3Fluence && <span className="text-fluence-400 ml-1">+ Fluence</span>}
               </span>
             </div>
             <PhoneMockup>
@@ -91,7 +120,7 @@ export default function MultiConversation() {
                 messages={messages}
                 isTyping={isTyping}
                 typingSender={typingSender}
-                hasFluence={conv.hasFluence}
+                hasFluence={isConv3Fluence}
               />
             </PhoneMockup>
 
@@ -129,7 +158,7 @@ export default function MultiConversation() {
               <EventStream events={events} />
             </div>
             <AnimatePresence>
-              {conv.briefing && messages.length > 0 && (
+              {isConv3Fluence && conv.briefing && messages.length > 0 && (
                 <AgentBriefingCard briefing={conv.briefing} />
               )}
             </AnimatePresence>
@@ -144,6 +173,30 @@ export default function MultiConversation() {
                 Next conversation: {joao.conversations[activeIndex + 1]?.label} →
               </motion.button>
             )}
+
+            {/* Final outcome card */}
+            <AnimatePresence>
+              {showFinalOutcome && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`p-4 rounded-xl border text-center ${
+                    fluenceEnabled
+                      ? 'bg-green-500/10 border-green-500/30'
+                      : 'bg-red-500/10 border-red-500/30'
+                  }`}
+                >
+                  <div className={`text-lg font-bold ${fluenceEnabled ? 'text-green-400' : 'text-red-400'}`}>
+                    {fluenceEnabled ? 'Customer Retained' : 'Customer Churned'}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1">
+                    {fluenceEnabled
+                      ? 'CSAT trajectory: 3 → 2 → 4. Fluence identified churn risk and adapted the experience.'
+                      : 'CSAT trajectory: 3 → 2 → 1. Same cold start three times. Customer left for a competitor.'}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
