@@ -13,7 +13,7 @@ const tabs = [
 
 export default function IntelligenceApp() {
   return (
-    <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+    <div className="flex-1 bg-gray-950 text-white flex flex-col min-h-0">
       {/* Internal section nav */}
       <div className="flex items-center justify-between px-6 py-2.5 border-b border-white/10">
         <span className="text-xs text-gray-500">Omnichannel Intelligence Demo</span>

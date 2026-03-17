@@ -18,7 +18,7 @@ export default function WorkspaceApp() {
   const [fluenceEnabled, setFluenceEnabled] = useState(true)
 
   return (
-    <div className="h-screen flex flex-col bg-gray-950 text-white overflow-hidden">
+    <div className="flex-1 flex flex-col bg-gray-950 text-white overflow-hidden min-h-0">
       {/* Internal section nav */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-white/10 flex-shrink-0">
         <span className="text-xs text-gray-500">Agent Workspace Demo</span>
