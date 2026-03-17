@@ -3,15 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import type { ConversationMessage, MoodState } from '@/data/types'
 import { MOOD_CONVERSATION, MOOD_CONVERSATION_FLUENCE } from '@/data/moodSequences'
 import { INBOX_CUSTOMERS } from '@/data/inboxCustomers'
+import { useFluence } from '../WorkspaceApp'
 import MoodDetector from '../components/MoodDetector'
-
-interface LiveMoodProps {
-  fluenceEnabled: boolean
-}
 
 const defaultMood: MoodState = { level: 'neutral', patience: 1.0, label: 'WAITING' }
 
-export default function LiveMood({ fluenceEnabled }: LiveMoodProps) {
+export default function LiveMood() {
+  const fluenceEnabled = useFluence()
   const [messageIndex, setMessageIndex] = useState(0)
   const [playing, setPlaying] = useState(false)
 

@@ -6,10 +6,7 @@ import {
   CROSS_CHANNEL_WHATSAPP_GENERIC,
   CROSS_CHANNEL_WHATSAPP_FLUENCE,
 } from '@/data/moodSequences'
-
-interface CrossChannelProps {
-  fluenceEnabled: boolean
-}
+import { useFluence } from '../WorkspaceApp'
 
 const channelIcons = { instagram: '📸', whatsapp: '📱' }
 
@@ -58,7 +55,8 @@ function ChatPanel({ title, icon, messages, highlight }: {
   )
 }
 
-export default function CrossChannel({ fluenceEnabled }: CrossChannelProps) {
+export default function CrossChannel() {
+  const fluenceEnabled = useFluence()
   const [step, setStep] = useState<'instagram' | 'whatsapp'>('instagram')
   const [visibleMessages, setVisibleMessages] = useState(0)
 

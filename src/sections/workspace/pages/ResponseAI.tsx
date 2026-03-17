@@ -2,13 +2,10 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RESPONSE_SUGGESTIONS } from '@/data/responseSuggestions'
 import { INBOX_CUSTOMERS } from '@/data/inboxCustomers'
+import { useFluence } from '../WorkspaceApp'
 import ResponseSuggestion from '../components/ResponseSuggestion'
 import ConversationPanel from '../components/ConversationPanel'
 import FluencePanel from '../components/FluencePanel'
-
-interface ResponseAIProps {
-  fluenceEnabled: boolean
-}
 
 const scenarioKeys = ['joao', 'maria', 'pedro', 'carlos'] as const
 const scenarioLabels: Record<string, string> = {
@@ -18,7 +15,8 @@ const scenarioLabels: Record<string, string> = {
   carlos: 'Carlos — Expand',
 }
 
-export default function ResponseAI({ fluenceEnabled }: ResponseAIProps) {
+export default function ResponseAI() {
+  const fluenceEnabled = useFluence()
   const [activeScenario, setActiveScenario] = useState<string>('joao')
   const [applied, setApplied] = useState<Record<string, boolean>>({})
   const [inputValues, setInputValues] = useState<Record<string, string>>(() => {

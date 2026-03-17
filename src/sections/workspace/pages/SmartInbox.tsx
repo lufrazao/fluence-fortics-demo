@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { INBOX_CUSTOMERS } from '@/data/inboxCustomers'
+import { useFluence } from '../WorkspaceApp'
 import InboxSidebar from '../components/InboxSidebar'
 import ConversationPanel from '../components/ConversationPanel'
 import ContactInfo from '../components/ContactInfo'
 import FluencePanel from '../components/FluencePanel'
 
-interface SmartInboxProps {
-  fluenceEnabled: boolean
-}
-
-export default function SmartInbox({ fluenceEnabled }: SmartInboxProps) {
+export default function SmartInbox() {
+  const fluenceEnabled = useFluence()
   const [activeCustomerId, setActiveCustomerId] = useState<string>(INBOX_CUSTOMERS[0].id)
 
   const activeCustomer = INBOX_CUSTOMERS.find((c) => c.id === activeCustomerId) ?? INBOX_CUSTOMERS[0]

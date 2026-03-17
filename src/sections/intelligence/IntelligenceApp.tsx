@@ -1,8 +1,4 @@
-import { Routes, Route, NavLink, Navigate } from 'react-router-dom'
-import LiveDemo from './pages/LiveDemo'
-import Personas from './pages/Personas'
-import MultiConversation from './pages/MultiConversation'
-import Impact from './pages/Impact'
+import { Outlet, NavLink } from 'react-router-dom'
 
 const tabs = [
   { to: '', label: 'Live Demo', end: true },
@@ -39,13 +35,7 @@ export default function IntelligenceApp() {
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Routes>
-          <Route path="" element={<LiveDemo />} />
-          <Route path="personas" element={<Personas />} />
-          <Route path="multi" element={<MultiConversation />} />
-          <Route path="impact" element={<Impact />} />
-          <Route path="*" element={<Navigate to="" replace />} />
-        </Routes>
+        <Outlet />
       </div>
 
       <footer className="text-center py-2 border-t border-white/5">

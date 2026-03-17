@@ -1,16 +1,14 @@
 import { motion } from 'framer-motion'
 import { QUEUE_HEALTH, WEEKLY_TRENDS, CHURN_SAVES, BEHAVIORAL_INSIGHTS } from '@/data/supervisorData'
 import { AGENTS } from '@/data/agentProfiles'
+import { useFluence } from '../WorkspaceApp'
 import QueueHealth from '../components/QueueHealth'
 import AgentPerformanceTable from '../components/AgentPerformanceTable'
 import BehavioralInsights from '../components/BehavioralInsights'
 import WeeklyTrends from '../components/WeeklyTrends'
 
-interface SupervisorProps {
-  fluenceEnabled: boolean
-}
-
-export default function Supervisor({ fluenceEnabled }: SupervisorProps) {
+export default function Supervisor() {
+  const fluenceEnabled = useFluence()
   if (!fluenceEnabled) {
     return (
       <div className="h-full flex items-center justify-center bg-gray-50">
